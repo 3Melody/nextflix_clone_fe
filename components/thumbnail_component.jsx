@@ -6,8 +6,8 @@ import thumbnail_img from '../public/images/Card.png'
 
 export default function thumbnail({image,title} ) { 
   return (
-    <div>
-        <Image src={image} alt='thumbnail' width={300} ></Image>
+    <div className='cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out '>
+        <img src={image} alt='thumbnail' className='w-full h-full' ></img>
     </div>
   )
 }

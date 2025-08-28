@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import image_show_mock from "../public/images/Main_Show_BG.png";
+import image_show_mock from "../public/images/Main_Show_BG.jpg";
 import Thumbnail from "../components/thumbnail_component";
 import thumbnail_img from "../public/images/Card.png";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,18 +9,36 @@ import "swiper/css";
 import name_movie from "../public/images/Show_Logo.png";
 import { Autoplay } from "swiper/modules";
 import top10 from "../public/images/Top10.png";
+import { useEffect, useState } from "react";
+import MovieDetailModal from "../components/popup_movie_detail";
 
-const movies = [
-  { id: 1, title: "Movie A", image: thumbnail_img },
-  { id: 2, title: "Movie B", image: thumbnail_img },
-  { id: 3, title: "Movie C", image: thumbnail_img },
-  { id: 4, title: "Movie D", image: thumbnail_img },
-  { id: 5, title: "Movie D", image: thumbnail_img },
-  { id: 6, title: "Movie D", image: thumbnail_img },
-  { id: 7, title: "Movie D", image: thumbnail_img },
-];
 
 export default function Home() {
+
+ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+const [popular , setPopular] = useState([]);
+const [movieDetail, setMovieDetail] = useState(null);
+const [openModal, setOpenModal] = useState(false);
+
+
+useEffect(() => {
+  fetch(`${apiUrl}/movies/popular`)
+  .then((response) => response.json())
+  .then((data) => setPopular(data))
+  .catch((error) => console.error("Error fetching movies:", error));
+}, []);
+
+const showModalDetails = (movieId: number) => {
+  fetch(`${apiUrl}/movies/details/${movieId}`)
+  .then((response) => response.json())
+  .then((data) => {
+    setMovieDetail(data);
+    setOpenModal(true);
+  })
+  .catch((error) => console.error("Error fetching movie details:", error));
+};
+
   return (
     <div>
       <div>
@@ -91,16 +109,18 @@ export default function Home() {
                   768: { slidesPerView: 6.5, spaceBetween: 15  , slidesOffsetBefore: 55}, // md
                   1024: { slidesPerView: 6.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // lg
                 }}
+                
               >
-                {movies.map((movie: any) => (
-                  <SwiperSlide key={movie.id}>
-                    <Thumbnail image={movie.image} title={movie.title} />
+                {popular.map((movie: any) => (
+                  <SwiperSlide key={movie.id} onClick={() => showModalDetails(movie.id)}>
+                    <Thumbnail image={movie.posterUrl} title={movie.title} />
                   </SwiperSlide>
                 ))}
               </Swiper>
             </div>
           </div>
       </div>
+      <MovieDetailModal isOpen={openModal} closeModal={() => setOpenModal(false)} movieDetail={movieDetail} />
     </div>
   );
 }
