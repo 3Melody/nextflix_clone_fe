@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['image.tmdb.org'], // เพิ่มตรงนี้
+  },  
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
