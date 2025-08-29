@@ -9,7 +9,7 @@ import UiState from "../components/stateMenage/UiState";
 export default function MovieDetailModal({ isOpen, closeModal , movieId }) {
 
     if (!movieId) {
-        return;
+          return null;
     }
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;

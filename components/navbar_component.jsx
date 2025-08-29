@@ -1,12 +1,28 @@
-import React from 'react'
+'use client';
+
+import React , { useState } from 'react'
 import Image from 'next/image'
 import logo_netflix from '../public/images/nexflix_logo.png'
 import logo_netflix_mobile from '../public/images/logo_mobile.png'
-
+import { useRouter } from 'next/navigation';
 export default function navbar() {
+  const [showSearch, setShowSearch] = useState(false);
+  const router = useRouter();
+  const handleSearchIconClick = () => {
+    setShowSearch(!showSearch);
+  }
+
+  const routetoSearch = (e) => {
+    const query = e.target.value;
+    if (query.trim()) {
+      localStorage.setItem('lastSearch', query);
+      window.dispatchEvent(new Event('lastSearchChange'));
+      router.push(`/search`);
+    }
+  }
   return (
-    <div className='md:py-4 py-8 px-14 bg-linear-to-b from-black to-transparent '> 
-        <div className='flex justify-between'>
+    <div className='md:py-2 py-8 px-14 bg-linear-to-b h-20 from-black to-transparent '> 
+        <div className='flex justify-between h-16'>
           <div className='flex items-center'>
             <Image src={logo_netflix} alt='logo' width={100} className='cursor-pointer object-contain hidden md:block'/>
             <Image src={logo_netflix_mobile} alt='logo' width={20}  className='cursor-pointer object-contain block md:hidden'/>
@@ -19,7 +35,8 @@ export default function navbar() {
             </ul>
           </div>
           <div className='flex items-center gap-6'>
-            <i className="fa-solid fa-magnifying-glass cursor-pointer"></i>
+           {showSearch && ( <div><input type="text" className='px-2 py-1 rounded border' placeholder='Search' onKeyDown={(e) => e.key === 'Enter' && routetoSearch(e) } /></div>)}
+            <i onClick={handleSearchIconClick} className="fa-solid fa-magnifying-glass cursor-pointer"></i>
             <p className='text-sm cursor-pointer hidden md:inline'>Kids</p>
             <i className="fa-solid fa-bell cursor-pointer"></i>
             <i className="fa-solid fa-user cursor-pointer"></i>
