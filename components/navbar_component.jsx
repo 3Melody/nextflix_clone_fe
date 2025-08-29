@@ -11,11 +11,11 @@ export default function navbar() {
             <Image src={logo_netflix} alt='logo' width={100} className='cursor-pointer object-contain hidden md:block'/>
             <Image src={logo_netflix_mobile} alt='logo' width={20}  className='cursor-pointer object-contain block md:hidden'/>
             <ul className='md:flex gap-8 ml-10 hidden '>
-              <li>Home</li>
-              <li>TV Shows</li>
-              <li>Movies</li>
-              <li>New & Popular</li>
-              <li>My List</li>
+              <li className='hover:text-red-500'>Home</li>
+              <li  className='hover:text-red-500'>TV Shows</li>
+              <li  className='hover:text-red-500'>Movies</li>
+              <li  className='hover:text-red-500'>New & Popular</li>
+              <li  className='hover:text-red-500'>My List</li>
             </ul>
           </div>
           <div className='flex items-center gap-6'>

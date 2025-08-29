@@ -29,6 +29,10 @@ button {
   cursor: pointer;
 }
 
+li{
+  cursor: pointer;
+}
+
 
 .scrollbar-glass {
   scrollbar-width: thin; /* Firefox */

@@ -11,6 +11,7 @@ import { Autoplay } from "swiper/modules";
 import top10 from "../public/images/Top10.png";
 import { useEffect, useState } from "react";
 import MovieDetailModal from "../components/popup_movie_detail";
+import UiState from "@/components/stateMenage/UiState";
 
 
 export default function Home() {
@@ -18,29 +19,32 @@ export default function Home() {
  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const [popular , setPopular] = useState([]);
-const [movieDetail, setMovieDetail] = useState(null);
+const [movieId, setMovieId] = useState(Number(0));
 const [openModal, setOpenModal] = useState(false);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
 
 
 useEffect(() => {
   fetch(`${apiUrl}/movies/popular`)
   .then((response) => response.json())
   .then((data) => setPopular(data))
-  .catch((error) => console.error("Error fetching movies:", error));
+  .catch((error) => setError("Error fetching movies:" + error))
+  .finally(() => setLoading(false));
 }, []);
 
 const showModalDetails = (movieId: number) => {
-  fetch(`${apiUrl}/movies/details/${movieId}`)
-  .then((response) => response.json())
-  .then((data) => {
-    setMovieDetail(data);
-    setOpenModal(true);
-  })
-  .catch((error) => console.error("Error fetching movie details:", error));
+  setMovieId(movieId);
+  setOpenModal(true);
 };
 
   return (
+    
     <div>
+      <UiState
+      loading={loading}
+      error={error || undefined}
+    ></UiState>
       <div>
         <div className="relative">
           <Image
@@ -120,7 +124,7 @@ const showModalDetails = (movieId: number) => {
             </div>
           </div>
       </div>
-      <MovieDetailModal isOpen={openModal} closeModal={() => setOpenModal(false)} movieDetail={movieDetail} />
+      <MovieDetailModal isOpen={openModal} closeModal={() => setOpenModal(false)} movieId={movieId} />
     </div>
   );
 }
