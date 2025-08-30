@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
     domains: ['image.tmdb.org'],
   },
   experimental: {
-    optimizeCss: true, // ลดขนาด CSS
+    optimizeCss: false, // ลดขนาด CSS
+    
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production", // ตัด console.log ออกเวลา build
