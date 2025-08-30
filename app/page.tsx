@@ -20,6 +20,7 @@ export default function Home() {
  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const [popular , setPopular] = useState([]);
+const [topRated , setTopRated] = useState([]);
 const [movieId, setMovieId] = useState(Number(0));
 const [openModal, setOpenModal] = useState(false);
 const { setLoading, setError } = useUi();
@@ -40,6 +41,12 @@ useEffect(() => {
   fetch(`${apiUrl}/movies/popular`)
   .then((response) => response.json())
   .then((data) => setPopular(data))
+  .catch((error) => setError("Error fetching movies:" + error))
+  .finally(() => setLoading(false));
+
+  fetch(`${apiUrl}/movies/top-rated`)
+  .then((response) => response.json())
+  .then((data) => setTopRated(data))
   .catch((error) => setError("Error fetching movies:" + error))
   .finally(() => setLoading(false));
 }, []);
@@ -124,6 +131,31 @@ const showModalDetails = (movieId: number) => {
                 
               >
                 {popular.map((movie: any) => (
+                  <SwiperSlide key={movie.id} onClick={() => showModalDetails(movie.id)}>
+                    <Thumbnail image={movie.posterUrl} title={movie.title} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+             <div className="md:text-2xl text-md font-bold mb-3 md:pl-14 pl-4 mt-4 md:mt-2">
+              {mounted ? t("topRated") : "Top Rated"}
+            </div>
+            <div>
+              <Swiper
+                spaceBetween={10}
+                slidesPerView={3.5}
+                slidesOffsetBefore={20}
+                breakpoints={{
+                  480: { slidesPerView: 4.5, spaceBetween: 10 , slidesOffsetBefore: 30}, // xs
+                  640: { slidesPerView: 5.5, spaceBetween: 10 , slidesOffsetBefore: 30}, // sm
+                  768: { slidesPerView: 4, spaceBetween: 15  , slidesOffsetBefore: 55}, // md
+                  1024: { slidesPerView: 4.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // lg
+                  1280: { slidesPerView: 5.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // xl
+                  1536: { slidesPerView: 6.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // 2xl
+                }}
+                
+              >
+                {topRated.map((movie: any) => (
                   <SwiperSlide key={movie.id} onClick={() => showModalDetails(movie.id)}>
                     <Thumbnail image={movie.posterUrl} title={movie.title} />
                   </SwiperSlide>

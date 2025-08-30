@@ -21,6 +21,7 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
     const [loading, setLoading] = useState(false);
     const [mounted, setMounted] = useState(false);
     const { t, i18n } = useTranslation();
+    const [videoUrl, setVideoUrl] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -32,17 +33,33 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
         setLoading(true);
         fetch(`${apiUrl}/movies/details/${movieId}`).then((response) => response.json())
         .then((data) => {
-          setLoading(false);
           setMovieDetail(data);
+          getVideoUrl(movieId);
         })
         .catch((error) => setError(error.message)).finally(() => setLoadingOverlay(false));
+
+        // Fetch video URL
+
     } , [movieId, apiUrl]);
 
-    // Early return after hooks
-    if (!movieId) {
-          return null;
-    }
-
+    const getVideoUrl = async (id: number) => {
+      try {
+        const response = await fetch(`${apiUrl}/movies/videos/${id}`);
+        const data = await response.json();
+        if (!response.ok) {
+          setError(data.message || 'Failed to fetch video URL');
+          return;
+        }
+        if(data){
+          setVideoUrl(data[0]?.key);
+        }else{
+          setVideoUrl('');
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching video URL:", error);
+      }
+    };
     
     const episodeList = [
         { id: 1, title: "Episode 1", description: "Description of Episode 1" , posterUrl: "https://image.tmdb.org/t/p/w500/yvirUYrva23IudARHn3mMGVxWqM.jpg" },
@@ -79,8 +96,18 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                 {!loading && (
                   <div className="overflow-y-auto scrollbar-glass max-h-[95vh]">
                     <div className="relative h-100 w-full">
-                      {movieDetail.posterUrl ? (
-                        <img loading="lazy" 
+                      {videoUrl ? (
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src={`https://www.youtube.com/embed/${videoUrl}`}
+                          title="YouTube video player"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : movieDetail.posterUrl ? (
+                        <img
+                          loading="lazy"
                           src={movieDetail.posterUrl}
                           alt={movieDetail.title}
                           className="w-full h-full object-cover rounded"
@@ -88,6 +115,12 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                       ) : (
                         <div className="w-full h-full bg-black rounded"></div>
                       )}
+                      <button
+                        onClick={closeModal}
+                        className="absolute top-4 right-4"
+                      >
+                        <i className="fa-solid fa-square-xmark  text-3xl"></i>
+                      </button>
                       <div className="absolute left-0 bottom-0 p-6 z-10 w-full flex items-center md:items-start flex-col ">
                         <div className="text-white text-3xl mb-5 font-bold">
                           {movieDetail.title}
@@ -118,9 +151,17 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 text-sm text-gray-400">
-                          <div>{mounted ? t("cast") : "Cast"} : {movieDetail.cast}</div>
-                          <div>{mounted ? t("director") : "Director"} : {movieDetail.director}</div>
-                          <div>{mounted ? t("datePublished") : "Release Date"} : {movieDetail.releaseDate}</div>
+                          <div>
+                            {mounted ? t("cast") : "Cast"} : {movieDetail.cast}
+                          </div>
+                          <div>
+                            {mounted ? t("director") : "Director"} :{" "}
+                            {movieDetail.director}
+                          </div>
+                          <div>
+                            {mounted ? t("datePublished") : "Release Date"} :{" "}
+                            {movieDetail.releaseDate}
+                          </div>
                         </div>
                         <div className="flex gap-4 md:hidden ">
                           <button className="border text-white w-10 h-10 rounded-full md:hidden flex items-center justify-center">
@@ -135,7 +176,9 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                         </div>
                       </div>
                       <div className="mt-10">
-                        <div className="text-xl font-bold">{mounted ? t("episodes") : "Episodes"}</div>
+                        <div className="text-xl font-bold">
+                          {mounted ? t("episodes") : "Episodes"}
+                        </div>
                         <div>
                           <ul>
                             {episodeList.map((episode) => (
@@ -143,14 +186,16 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                                 key={episode.id}
                                 className="flex items-center gap-4 my-4 cursor-pointer  hover:bg-white/10 p-2 rounded"
                               >
-                              { movieDetail.posterUrl ?(  <img loading="lazy" 
-                                  src={movieDetail.posterUrl}
-                                  alt={episode.title}
-                                  className="w-32 h-20 object-cover rounded"
-                                />
-                                ) : 
-                                <div className="w-32 h-20 bg-black rounded"></div>
-                                } 
+                                {movieDetail.posterUrl ? (
+                                  <img
+                                    loading="lazy"
+                                    src={movieDetail.posterUrl}
+                                    alt={episode.title}
+                                    className="w-32 h-20 object-cover rounded"
+                                  />
+                                ) : (
+                                  <div className="w-32 h-20 bg-black rounded"></div>
+                                )}
 
                                 <div>
                                   <div className="font-bold">

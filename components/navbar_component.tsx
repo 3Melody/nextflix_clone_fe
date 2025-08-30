@@ -118,9 +118,9 @@ export default function Navbar() {
             <li onClick={routeToHome} className="hover:text-red-500">
               {mounted ? t("home") : "Home"}
             </li>
-            <li className="hover:text-red-500"> {mounted ? t("tvShows") : "TV Shows"}</li>
-            <li className="hover:text-red-500">{mounted ? t("movies") : "Movies"}</li>
-            <li className="hover:text-red-500">{mounted ? t("newAndPopular") : "New & Popular"}</li>
+            <li onClick={() => router.push('/search')} className="hover:text-red-500"> {mounted ? t("tvShows") : "TV Shows"}</li>
+            <li onClick={() => router.push('/search')} className="hover:text-red-500">{mounted ? t("movies") : "Movies"}</li>
+            <li onClick={() => router.push('/search')}className="hover:text-red-500">{mounted ? t("newAndPopular") : "New & Popular"}</li>
             <li className="hover:text-red-500">
               {mounted ? t("myList") : "My List"}
             </li>

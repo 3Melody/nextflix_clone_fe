@@ -20,12 +20,15 @@ export default function SearchPage() {
   const [mounted, setMounted] = useState(false);
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState([]);
 
     useEffect(() => {
       setMounted(true);
     }, []);
 
   useEffect(() => {
+
+    fetchCategory();
     const handleStorageChange = () => {
       const lastSearch = localStorage.getItem('lastSearch') || '';
       setKeyword(lastSearch);
@@ -67,22 +70,80 @@ export default function SearchPage() {
       console.error("Error fetching movies:", error);
     }
   };
+
+  const fetchCategory = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/movies/genres`);
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message || 'Failed to fetch categories');
+        return;
+      }
+      setCategory(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const ChangeCategories  = async (categoryId : number) => {
+    try {
+      setLoadingOverlay(true);
+      setLoading(true);
+      const response = await fetch(`${apiUrl}/movies/genres/${categoryId}`);
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message || 'Failed to fetch movies');
+        return;
+      }
+      setMovies(data);
+      setMovieTotal(data.length);
+      setLoadingOverlay(false);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  }
   
   return (
     <div>
       <div className="xl:pt-20 xl:px-13 pt-40 px-5 pb-5 ">
-        <div className="text-xl font-bold">{mounted ? t('searchData') : 'Search result'}  {movieTotal}</div>
-        {(movies.length === 0 && !loading) ? ( <div className='text-xl font-bold flex justify-center items-center h-[80vh]'>{mounted ? t("noData") : "No Data"}</div>): (
-           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 mt-5 h-100">
-          {movies.map((movie: any) => (
-            <div key={movie.id} onClick={() => showModalDetails(movie.id)}>
-              {" "}
-              <Thumbnail image={movie.posterUrl} title={movie.title} />
-            </div>
-          ))}
+        <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
+          <div className="text-xl font-bold">
+            {mounted ? t("searchData") : "Search result"} {movieTotal}
+          </div>
+
+          <div className="flex gap-3 items-center">
+            <div className="text-md font-bold">{mounted ? t("categories") : "Category"} : </div>
+            <select
+              className="bg-transparent border px-4 py-3 rounded-md text-sm font-bold"
+              onChange={(e: any) => ChangeCategories(e.target.value)}
+            >
+              {category.map((cat: any) => (
+                <option
+                  key={cat.id}
+                  value={cat.id}
+                  className="text-sm text-black"
+                >
+                  {mounted ? t(cat.name) : cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+        {movies.length === 0 && !loading ? (
+          <div className="text-xl font-bold flex justify-center items-center h-[80vh]">
+            {mounted ? t("noData") : "No Data"}
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 mt-5 h-100">
+            {movies.map((movie: any) => (
+              <div key={movie.id} onClick={() => showModalDetails(movie.id)}>
+                {" "}
+                <Thumbnail image={movie.posterUrl} title={movie.title} />
+              </div>
+            ))}
+          </div>
         )}
-       
       </div>
       <MovieDetailModal
         isOpen={openModal}

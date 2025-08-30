@@ -33,6 +33,7 @@ if (!i18n.isInitialized) {
             episodes: "Episodes",
             categories: "Categories",
             topRatedToDay: "#1 in TV Shows Today",
+            topRated: "Top Rated",
             overview:"Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger."
           },
         },
@@ -56,6 +57,7 @@ if (!i18n.isInitialized) {
             episodes: "ตอน",
             categories: "หมวดหมู่",
             topRatedToDay: "#1 ในรายการทีวีวันนี้",
+            topRated: "อันดับสูงสุด",
             overview: "มุ่งมั่นที่จะปกป้องผู้ป่วยรายหนึ่งที่หนีออกจากลัทธิลึกลับ จิตแพทย์จึงรับเด็กหญิงคนนั้นเข้ามา ซึ่งทำให้ครอบครัวและชีวิตของเธอตกอยู่ในอันตราย"
           },
         },
