@@ -106,7 +106,7 @@ export default function SearchPage() {
   
   return (
     <div>
-      <div className="xl:pt-20 xl:px-13 pt-40 px-5 pb-5 ">
+      <div className="xl:pt-20 xl:px-13 pt-40 px-5 pb-5">
         <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
           <div className="text-xl font-bold">
             {mounted ? t("searchData") : "Search result"} {movieTotal}

@@ -64,33 +64,35 @@ const showModalDetails = (movieId: number) => {
           <Image
             src={image_show_mock}
             alt="logo"
-            className="w-[100vw] h-[100vh] object-cover object-[70%_0] md:object-center"
+            className="w-[100vw] h-[100vh] object-cover object-[70%_0] xl:object-center"
           />
-          <div className="absolute md:top-1/2 md:left-[3%] md:-translate-y-1/2 md:translate-x-0 bottom-[7%] left-1/2 -translate-x-1/2 w-70 md:w-160">
-            <div className="flex flex-col gap-5 md:gap-6 items-center md:items-start">
+          <div className="absolute xl:top-1/2 xl:left-[3%] xl:-translate-y-1/2 xl:translate-x-0 bottom-[7%] left-1/2 -translate-x-1/2 w-70 xl:w-160">
+            <div className="flex flex-col gap-5 xl:gap-6 items-center xl:items-start">
               <Image src={name_movie} alt="logo" width={500} /> 
               <div className="flex gap-3 items-center ">
                 <Image
                   src={top10}
                   alt="logo"
                   width={30}
-                  className="hidden md:flex "
+                  className="hidden xl:flex "
                 ></Image>
-                <div className=" text-xl md:text-3xl font-bold">
+                <div className=" text-xl xl:text-3xl font-bold">
                   {mounted ? t("topRatedToDay") : "#1 in TV Shows Today"}
                 </div>
               </div>
-              <div className="text-lg max-w-xl line-clamp-3 hidden md:flex">
+              <div className="text-lg max-w-xl line-clamp-3 hidden xl:flex">
                 {mounted ? t("overview") : "Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger."}
               </div>
-              <div className="flex  justify-between gap-4 items-center md:hidden">
+
+              {/* Mobile */}
+              <div className="flex  justify-between gap-4 items-center xl:hidden">
                 <div className="flex flex-col justify-center items-center gap-2 ">
                   <i className="fas fa-plus text-xl"></i>
                   <div className="text-sm font-semibold text-nowrap">
                     {mounted ? t("myList") : "My List"}
                   </div>
                 </div>
-                <button className="bg-white text-black px-4 py-2 rounded-md text-nowrap text-lg font-semibold md:mr-4 hover:bg-gray-300 transition duration-300">
+                <button className="bg-white text-black px-4 py-2 rounded-md text-nowrap text-lg font-semibold xl:mr-4 hover:bg-gray-300 transition duration-300">
                   <i className="fas fa-play mr-2"></i> {mounted ? t("play") : "Play"}
                 </button>
                 <div className="flex flex-col justify-center items-center gap-2  ">
@@ -100,7 +102,7 @@ const showModalDetails = (movieId: number) => {
                   </div>
                 </div>
               </div>
-              <div className="hidden md:flex">
+              <div className="hidden xl:flex">
                 <button className="bg-white text-black px-6 py-3 rounded-md text-lg font-semibold mr-4 hover:bg-gray-300 transition duration-300">
                   <i className="fas fa-play mr-2"></i> {mounted ? t("play") : "Play"}
                 </button>
@@ -111,7 +113,9 @@ const showModalDetails = (movieId: number) => {
             </div>
           </div>
         </div>
-          <div className="relative z-10 md:top-[-100px]">
+
+        {/* Popular on Netflix */}
+          <div className="relative z-10 xl:top-[-100px]">
             <div className="md:text-2xl text-md font-bold mb-3 md:pl-14 pl-4 mt-4 md:mt-0">
               {mounted ? t("popInNetflix") : "Popular on Netflix"}
             </div>
