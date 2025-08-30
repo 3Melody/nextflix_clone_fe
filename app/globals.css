@@ -3,15 +3,15 @@
 
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-/* Dark mode class for Tailwind dark: prefix support */
-.dark {
   --background: #141414;
   --foreground: #ededed;
 }
+
+/* Dark mode class for Tailwind dark: prefix support */
+/* .dark {
+  --background: #141414;
+  --foreground: #ededed;
+} */
 
 @theme inline {
   --color-background: var(--background);
@@ -20,12 +20,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #141414;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--background) ;

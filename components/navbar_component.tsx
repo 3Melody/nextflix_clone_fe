@@ -36,14 +36,14 @@ export default function Navbar() {
     setLanguage(i18n.language);
     fetch(`${apiUrl}/movies/ChangeLanguage?${new URLSearchParams(params).toString()}`).then((response) => response.json())
     
-    const savedDarkMode = localStorage.getItem('darkMode');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // const savedDarkMode = localStorage.getItem('darkMode');
+    // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedDarkMode !== null) {
-      setDark(savedDarkMode === 'true');
-    } else {
-      setDark(prefersDark);
-    }
+    // if (savedDarkMode !== null) {
+    //   setDark(savedDarkMode === 'true');
+    // } else {
+    //   setDark(prefersDark);
+    // }
   }, [mounted,i18n.language]);
 
   const toggleLang = () => {
