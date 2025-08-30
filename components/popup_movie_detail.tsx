@@ -1,32 +1,39 @@
 'use client';
 
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, use } from "react";
+import { Fragment } from "react";
 import React, { useEffect, useState } from "react";
-import UiState from "../components/stateMenage/UiState";
+import UiState from "./stateMenage/UiState";
 
+interface MovieDetailModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  movieId: number;
+}
 
-export default function MovieDetailModal({ isOpen, closeModal , movieId }) {
-
-    if (!movieId) {
-          return null;
-    }
+export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieDetailModalProps) {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const [movieDetail, setMovieDetail] = useState([]);
+    const [movieDetail, setMovieDetail] = useState<any>({});
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (!movieId) return;
+        
         setLoading(true);
         fetch(`${apiUrl}/movies/details/${movieId}`).then((response) => response.json())
         .then((data) => {
             setMovieDetail(data);
         })
         .catch((error) => setError(error.message)).finally(() => setLoading(false));
-    } , [movieId]);
+    } , [movieId, apiUrl]);
 
+    // Early return after hooks
+    if (!movieId) {
+          return null;
+    }
 
     
     const episodeList = [
@@ -70,7 +77,7 @@ export default function MovieDetailModal({ isOpen, closeModal , movieId }) {
                           src={movieDetail.posterUrl}
                           alt={movieDetail.title}
                           className="w-200 h-full object-cover rounded"
-                        ></img>
+                        />
                         <div className="absolute left-0 bottom-0 p-6 z-10 w-full flex items-center flex-col ">
                           <div className="text-white text-3xl mb-5 font-bold">
                             {movieDetail.title}
@@ -96,7 +103,6 @@ export default function MovieDetailModal({ isOpen, closeModal , movieId }) {
                       <div className="relative top-[-10px] bg-[#141414] p-6">
                         <div className="flex flex-col md:flex-row md:gap-10 gap-5">
                           <div className="md:max-w-[70%] w-full">
-                            {/* <div className="text-2xl font-bold mb-6">{movieDetail.title}</div> */}
                             <div className="text-sm">{movieDetail.overview}</div>
                           </div>
                           <div className="flex flex-col gap-2 text-sm text-gray-400">
@@ -129,7 +135,7 @@ export default function MovieDetailModal({ isOpen, closeModal , movieId }) {
                                     src={movieDetail.posterUrl}
                                     alt={episode.title}
                                     className="w-32 h-20 object-cover rounded"
-                                  ></img>
+                                  />
                                   <div>
                                     <div className="font-bold">{episode.title}</div>
                                     <div className="text-sm">

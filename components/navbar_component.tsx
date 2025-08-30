@@ -5,15 +5,17 @@ import Image from 'next/image'
 import logo_netflix from '../public/images/nexflix_logo.png'
 import logo_netflix_mobile from '../public/images/logo_mobile.png'
 import { useRouter } from 'next/navigation';
-export default function navbar() {
+
+export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false);
   const router = useRouter();
+  
   const handleSearchIconClick = () => {
     setShowSearch(!showSearch);
   }
 
-  const routetoSearch = (e) => {
-    const query = e.target.value;
+  const routetoSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const query = e.currentTarget.value;
     if (query.trim()) {
       localStorage.setItem('lastSearch', query);
       window.dispatchEvent(new Event('lastSearchChange'));

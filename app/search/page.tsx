@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import MovieDetailModal from '../../components/popup_movie_detail';
 
 
-export default function serachPage() {
+export default function SearchPage() {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [movieTotal , setMovieTotal] = useState(0);
@@ -17,16 +17,19 @@ export default function serachPage() {
 
   useEffect(() => {
     const handleStorageChange = () => {
-    const lastSearch = localStorage.getItem('lastSearch') || '';
-    setKeyword(lastSearch);
-    fetchMovies(lastSearch);
-  };
+      const lastSearch = localStorage.getItem('lastSearch') || '';
+      setKeyword(lastSearch);
+      fetchMovies(lastSearch);
+    };
 
-  window.addEventListener('lastSearchChange', handleStorageChange);
+    // Initial load
+    handleStorageChange();
 
-  return () => window.removeEventListener('lastSearchChange', handleStorageChange);
+    window.addEventListener('lastSearchChange', handleStorageChange);
+
+    return () => window.removeEventListener('lastSearchChange', handleStorageChange);
   
-  }, [keyword]);
+  }, []); // Remove keyword dependency to prevent infinite loops
 
   const showModalDetails = (movieId: number) => {
   setMovieId(movieId);

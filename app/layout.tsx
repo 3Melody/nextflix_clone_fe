@@ -2,8 +2,6 @@
 import "./globals.css";
 import Navbar from "../components/navbar_component";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Home from "./page";
-
 
 
 export default function RootLayout({
