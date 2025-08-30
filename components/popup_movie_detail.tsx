@@ -4,6 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import React, { useEffect, useState } from "react";
 import { useUi } from '../components/stateMenage/UiProvider';
+import { useTranslation } from "react-i18next";
 
 interface MovieDetailModalProps {
   isOpen: boolean;
@@ -18,6 +19,12 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
     const [movieDetail, setMovieDetail] = useState<any>({});
     const { setLoadingOverlay, setError } = useUi();
     const [loading, setLoading] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
     useEffect(() => {
         if (!movieId) return;
@@ -88,7 +95,7 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                         <div className="flex gap-4 items-center w-full ">
                           <button className="bg-white text-black py-2 md:px-8 w-full md:w-auto rounded">
                             <i className="fa-solid fa-play mr-2 ml-[-10px] md:ml-0"></i>
-                            Play
+                            {mounted ? t("play") : "Play"}
                           </button>
                           <button className="border text-white w-10 h-10 rounded-full hidden md:flex items-center justify-center">
                             <i className="fa-solid fa-plus text-xl"></i>
@@ -111,9 +118,9 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 text-sm text-gray-400">
-                          <div>Cast : {movieDetail.cast}</div>
-                          <div>Director : {movieDetail.director}</div>
-                          <div>Release Date : {movieDetail.releaseDate}</div>
+                          <div>{mounted ? t("cast") : "Cast"} : {movieDetail.cast}</div>
+                          <div>{mounted ? t("director") : "Director"} : {movieDetail.director}</div>
+                          <div>{mounted ? t("datePublished") : "Release Date"} : {movieDetail.releaseDate}</div>
                         </div>
                         <div className="flex gap-4 md:hidden ">
                           <button className="border text-white w-10 h-10 rounded-full md:hidden flex items-center justify-center">
@@ -128,7 +135,7 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
                         </div>
                       </div>
                       <div className="mt-10">
-                        <div className="text-xl font-bold">Episodes</div>
+                        <div className="text-xl font-bold">{mounted ? t("episodes") : "Episodes"}</div>
                         <div>
                           <ul>
                             {episodeList.map((episode) => (

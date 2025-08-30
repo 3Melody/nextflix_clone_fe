@@ -12,6 +12,7 @@ import top10 from "../public/images/Top10.png";
 import { useEffect, useState } from "react";
 import MovieDetailModal from "../components/popup_movie_detail";
 import { useUi } from '../components/stateMenage/UiProvider';
+import { useTranslation } from "react-i18next";
 
 
 export default function Home() {
@@ -22,6 +23,16 @@ const [popular , setPopular] = useState([]);
 const [movieId, setMovieId] = useState(Number(0));
 const [openModal, setOpenModal] = useState(false);
 const { setLoading, setError } = useUi();
+const [mounted, setMounted] = useState(false);
+ const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    setMounted(true);
+  });
+
+  const params = {
+    language: i18n.language || 'en',
+  } ;
 
 
 useEffect(() => {
@@ -59,37 +70,35 @@ const showModalDetails = (movieId: number) => {
                   className="hidden md:flex "
                 ></Image>
                 <div className=" text-xl md:text-3xl font-bold">
-                  #1 in TV Shows Today
+                  {mounted ? t("topRatedToDay") : "#1 in TV Shows Today"}
                 </div>
               </div>
               <div className="text-lg max-w-xl line-clamp-3 hidden md:flex">
-                Determined to protect a young patient who escaped a mysterious
-                cult, a psychiatrist takes the girl in, putting her own family —
-                and life — in danger.
+                {mounted ? t("overview") : "Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger."}
               </div>
-              <div className="flex justify-between gap-4 items-center md:hidden">
+              <div className="flex  justify-between gap-4 items-center md:hidden">
                 <div className="flex flex-col justify-center items-center gap-2 ">
                   <i className="fas fa-plus text-xl"></i>
                   <div className="text-sm font-semibold text-nowrap">
-                    My List
+                    {mounted ? t("myList") : "My List"}
                   </div>
                 </div>
-                <button className="bg-white text-black px-4 py-2 rounded-md text-lg font-semibold md:mr-4 hover:bg-gray-300 transition duration-300">
-                  <i className="fas fa-play mr-2"></i> Play
+                <button className="bg-white text-black px-4 py-2 rounded-md text-nowrap text-lg font-semibold md:mr-4 hover:bg-gray-300 transition duration-300">
+                  <i className="fas fa-play mr-2"></i> {mounted ? t("play") : "Play"}
                 </button>
                 <div className="flex flex-col justify-center items-center gap-2  ">
                   <i className="fas fa-info-circle mr-2 text-xl"></i>
                   <div className="text-sm font-semibold text-nowrap">
-                    More Info
+                    {mounted ? t("moreInfo") : "More Info"}
                   </div>
                 </div>
               </div>
               <div className="hidden md:flex">
                 <button className="bg-white text-black px-6 py-3 rounded-md text-lg font-semibold mr-4 hover:bg-gray-300 transition duration-300">
-                  <i className="fas fa-play mr-2"></i> Play
+                  <i className="fas fa-play mr-2"></i> {mounted ? t("play") : "Play"}
                 </button>
                 <button className="bg-gray-700 bg-opacity-70 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-gray-600 transition duration-300">
-                  <i className="fas fa-info-circle mr-2"></i> More Info
+                  <i className="fas fa-info-circle mr-2"></i> {mounted ? t("moreInfo") : "More Info"}
                 </button>
               </div>
             </div>
@@ -97,7 +106,7 @@ const showModalDetails = (movieId: number) => {
         </div>
           <div className="relative z-10 md:top-[-100px]">
             <div className="md:text-2xl text-md font-bold mb-3 md:pl-14 pl-4 mt-4 md:mt-0">
-              Popular on Netflix
+              {mounted ? t("popInNetflix") : "Popular on Netflix"}
             </div>
             <div>
               <Swiper
