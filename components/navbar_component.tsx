@@ -97,7 +97,7 @@ export default function Navbar() {
     router.push('/');
   }
   return (
-    <div className="md:py-2 py-8 px-14 bg-linear-to-b h-20 from-black to-transparent ">
+    <div className="md:py-2 py-8 px-14 bg-linear-to-b h-35 md:h-20 from-black to-transparent ">
       <div className="flex justify-between h-16">
         <div className="flex items-center">
           <Image

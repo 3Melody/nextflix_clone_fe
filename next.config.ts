@@ -3,8 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['image.tmdb.org'], // เพิ่มตรงนี้
-  },  
+    domains: ['image.tmdb.org'],
+  },
+  experimental: {
+    optimizeCss: true, // ลดขนาด CSS
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production", // ตัด console.log ออกเวลา build
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

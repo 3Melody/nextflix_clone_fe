@@ -34,7 +34,8 @@ if (!i18n.isInitialized) {
             categories: "Categories",
             topRatedToDay: "#1 in TV Shows Today",
             topRated: "Top Rated",
-            overview:"Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger."
+            overview:"Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger.",
+            overview1:"Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent."
           },
         },
         th: {
@@ -58,7 +59,8 @@ if (!i18n.isInitialized) {
             categories: "หมวดหมู่",
             topRatedToDay: "#1 ในรายการทีวีวันนี้",
             topRated: "อันดับสูงสุด",
-            overview: "มุ่งมั่นที่จะปกป้องผู้ป่วยรายหนึ่งที่หนีออกจากลัทธิลึกลับ จิตแพทย์จึงรับเด็กหญิงคนนั้นเข้ามา ซึ่งทำให้ครอบครัวและชีวิตของเธอตกอยู่ในอันตราย"
+            overview: "มุ่งมั่นที่จะปกป้องผู้ป่วยรายหนึ่งที่หนีออกจากลัทธิลึกลับ จิตแพทย์จึงรับเด็กหญิงคนนั้นเข้ามา ซึ่งทำให้ครอบครัวและชีวิตของเธอตกอยู่ในอันตราย",
+            overview1: "เรื่องราวของหนึ่งในซูเปอร์ฮีโร่ผู้เป็นที่รู้จักกันมากที่สุดคนหนึ่งของโลก ที่ต้องพยายามผสานความเป็นชาวดาวคริปตันและด้านที่เป็นมนุษย์โลก"
           },
         },
       },

@@ -4,7 +4,15 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import UiState from "@/components/stateMenage/UiState";
 import { UiProvider } from "@/components/stateMenage/UiProvider";
 import I18nProvider from "@/components/I18nProvider";
-import type { Metadata } from "next";
+import type { Metadata } from "next";import 
+{ Noto_Sans_Thai } from "next/font/google";
+
+const notoSansThai = Noto_Sans_Thai({
+  weight: ["400", "600", "700"],
+  subsets: ["thai"],
+  display: "swap", // ป้องกัน FOUT (text กระพริบ)
+});
+
 
 export const metadata: Metadata = {
   title: "Netflix Clone 101",
@@ -16,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body  className={notoSansThai.className}>
          <I18nProvider>
            <UiProvider>
              <div className="relative">

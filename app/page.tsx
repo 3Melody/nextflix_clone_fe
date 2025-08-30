@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import MovieDetailModal from "../components/popup_movie_detail";
 import { useUi } from '../components/stateMenage/UiProvider';
 import { useTranslation } from "react-i18next";
+import superman from "../public/images/super_man.jpg"
+import superman_logo from "../public/images/superman_logo.png"
 
 
 export default function Home() {
@@ -25,7 +27,12 @@ const [movieId, setMovieId] = useState(Number(0));
 const [openModal, setOpenModal] = useState(false);
 const { setLoading, setError } = useUi();
 const [mounted, setMounted] = useState(false);
- const { t, i18n } = useTranslation();
+const { t, i18n } = useTranslation();
+
+const movieShowFirst = [
+  { id: 2, img: image_show_mock,  logo: name_movie , width: 500, overview: "overview" },
+  { id: 1, img: superman, logo: superman_logo , width: 350, overview: "overview1" },
+]
 
   useEffect(() => {
     setMounted(true);
@@ -60,15 +67,26 @@ const showModalDetails = (movieId: number) => {
     
     <div>
       <div>
+        <Swiper
+          slidesPerView={1}
+          loop={true}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay]}
+        >
+        { movieShowFirst.map((movie) => (
+      <SwiperSlide key={movie.id}>
         <div className="relative">
           <Image
-            src={image_show_mock}
+            src={movie.img}
             alt="logo"
             className="w-[100vw] h-[100vh] object-cover object-[70%_0] xl:object-center"
           />
           <div className="absolute xl:top-1/2 xl:left-[3%] xl:-translate-y-1/2 xl:translate-x-0 bottom-[7%] left-1/2 -translate-x-1/2 w-70 xl:w-160">
             <div className="flex flex-col gap-5 xl:gap-6 items-center xl:items-start">
-              <Image src={name_movie} alt="logo" width={500} /> 
+              <Image src={movie.logo} alt="logo" width={movie.width} /> 
               <div className="flex gap-3 items-center ">
                 <Image
                   src={top10}
@@ -80,11 +98,11 @@ const showModalDetails = (movieId: number) => {
                   {mounted ? t("topRatedToDay") : "#1 in TV Shows Today"}
                 </div>
               </div>
-              <div className="text-lg max-w-xl line-clamp-3 hidden xl:flex">
-                {mounted ? t("overview") : "Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger."}
+              <div className="text-lg max-w-xl line-clamp-2 hidden xl:flex">
+                {mounted ? t(movie.overview) : "Determined to protect a young patient who escaped a mysterious cult, a psychiatrist takes the girl in, putting her own family — and life — in danger."}
               </div>
 
-              {/* Mobile */}
+             
               <div className="flex  justify-between gap-4 items-center xl:hidden">
                 <div className="flex flex-col justify-center items-center gap-2 ">
                   <i className="fas fa-plus text-xl"></i>
@@ -113,6 +131,9 @@ const showModalDetails = (movieId: number) => {
             </div>
           </div>
         </div>
+          </SwiperSlide>
+        ))}
+        </Swiper>
 
         {/* Popular on Netflix */}
           <div className="relative z-10 xl:top-[-100px]">

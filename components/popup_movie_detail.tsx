@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import React, { useEffect, useState } from "react";
 import { useUi } from '../components/stateMenage/UiProvider';
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 interface MovieDetailModalProps {
   isOpen: boolean;
@@ -94,124 +95,130 @@ export default function MovieDetailModal({ isOpen, closeModal, movieId }: MovieD
             >
               <Dialog.Panel className="rounded max-w-3xl w-full">
                 {!loading && (
-                  <div className="overflow-y-auto scrollbar-glass max-h-[95vh]">
-                    <div className="relative h-100 w-full">
-                      {videoUrl ? (
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          src={`https://www.youtube.com/embed/${videoUrl}`}
-                          title="YouTube video player"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      ) : movieDetail.posterUrl ? (
-                        <img
-                          loading="lazy"
-                          src={movieDetail.posterUrl}
-                          alt={movieDetail.title}
-                          className="w-full h-full object-cover rounded"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-black rounded"></div>
-                      )}
-                      <button
-                        onClick={closeModal}
-                        className="absolute top-4 right-4"
-                      >
-                        <i className="fa-solid fa-square-xmark  text-3xl"></i>
-                      </button>
-                      <div className="absolute left-0 bottom-0 p-6 z-10 w-full flex items-center md:items-start flex-col ">
-                        <div className="text-white text-3xl mb-5 font-bold">
-                          {movieDetail.title}
-                        </div>
-                        <div className="flex gap-4 items-center w-full ">
-                          <button className="bg-white text-black py-2 md:px-8 w-full md:w-auto rounded">
-                            <i className="fa-solid fa-play mr-2 ml-[-10px] md:ml-0"></i>
-                            {mounted ? t("play") : "Play"}
-                          </button>
-                          <button className="border text-white w-10 h-10 rounded-full hidden md:flex items-center justify-center">
-                            <i className="fa-solid fa-plus text-xl"></i>
-                          </button>
-                          <button className="border hidden text-white w-10 h-10 rounded-full md:flex items-center justify-center">
-                            <i className="fa-solid fa-thumbs-up text-xl"></i>
-                          </button>
-                          <button className="border hidden text-white w-10 h-10 rounded-full md:flex items-center justify-center">
-                            <i className="fa-solid fa-thumbs-down text-xl"></i>
+                     <div>
+                        <div className="flex justify-end ">
+                             <button
+                            onClick={closeModal}
+                            className=" z-50  "
+                          >
+                            <i className="fa-solid fa-square-xmark  text-3xl"></i>
                           </button>
                         </div>
+                    <div className="overflow-y-auto scrollbar-glass max-h-[90vh]">
+                      <div className="relative h-100 w-full">
+                        {videoUrl ? (
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${videoUrl}`}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : movieDetail.posterUrl ? (
+                         <div className="w-full h-full relative">
+                            <Image
+                              src={movieDetail.posterUrl}
+                              alt={movieDetail.title}
+                              fill
+                              className="object-cover"
+                            />
+                         </div>
+                        ) : (
+                          <div className="w-full h-full bg-black rounded"></div>
+                        )} 
+                        <div className="absolute left-0 bottom-0 p-6 z-10 w-full flex items-center md:items-start flex-col ">
+                          <div className="text-white text-3xl mb-5 font-bold">
+                            {movieDetail.title}
+                          </div>
+                          <div className="flex gap-4 items-center w-full ">
+                            <button className="bg-white text-black py-2 md:px-8 w-full md:w-auto rounded">
+                              <i className="fa-solid fa-play mr-2 ml-[-10px] md:ml-0"></i>
+                              {mounted ? t("play") : "Play"}
+                            </button>
+                            <button className="border text-white w-10 h-10 rounded-full hidden md:flex items-center justify-center">
+                              <i className="fa-solid fa-plus text-xl"></i>
+                            </button>
+                            <button className="border hidden text-white w-10 h-10 rounded-full md:flex items-center justify-center">
+                              <i className="fa-solid fa-thumbs-up text-xl"></i>
+                            </button>
+                            <button className="border hidden text-white w-10 h-10 rounded-full md:flex items-center justify-center">
+                              <i className="fa-solid fa-thumbs-down text-xl"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="absolute  bottom-0 w-full h-50 bg-gradient-to-t from-[#141414]  to-transparent"></div>
                       </div>
-                      <div className="absolute  bottom-0 w-full h-50 bg-gradient-to-t from-[#141414]  to-transparent"></div>
-                    </div>
-                    <div className="relative top-[-10px] bg-[#141414] p-6">
-                      <div className="flex flex-col md:flex-row md:gap-10 gap-5">
-                        <div className="md:max-w-[70%] w-full">
-                          <div className="text-sm">
-                            {movieDetail.overview || "-"}
+                      <div className="relative top-[-10px] bg-[#141414] p-6">
+                        <div className="flex flex-col md:flex-row md:gap-10 gap-5">
+                          <div className="md:max-w-[70%] w-full">
+                            <div className="text-sm">
+                              {movieDetail.overview || "-"}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-2 text-sm text-gray-400">
+                            <div>
+                              {mounted ? t("cast") : "Cast"} : {movieDetail.cast}
+                            </div>
+                            <div>
+                              {mounted ? t("director") : "Director"} :{" "}
+                              {movieDetail.director}
+                            </div>
+                            <div>
+                              {mounted ? t("datePublished") : "Release Date"} :{" "}
+                              {movieDetail.releaseDate}
+                            </div>
+                          </div>
+                          <div className="flex gap-4 md:hidden ">
+                            <button className="border text-white w-10 h-10 rounded-full md:hidden flex items-center justify-center">
+                              <i className="fa-solid fa-plus text-sm"></i>
+                            </button>
+                            <button className="border md:hidden text-white w-10 h-10 rounded-full flex items-center justify-center">
+                              <i className="fa-solid fa-thumbs-up text-sm"></i>
+                            </button>
+                            <button className="border md:hidden text-white w-10 h-10 rounded-full flex items-center justify-center">
+                              <i className="fa-solid fa-thumbs-down text-sm"></i>
+                            </button>
                           </div>
                         </div>
-                        <div className="flex flex-col gap-2 text-sm text-gray-400">
+                        <div className="mt-10">
+                          <div className="text-xl font-bold">
+                            {mounted ? t("episodes") : "Episodes"}
+                          </div>
                           <div>
-                            {mounted ? t("cast") : "Cast"} : {movieDetail.cast}
-                          </div>
-                          <div>
-                            {mounted ? t("director") : "Director"} :{" "}
-                            {movieDetail.director}
-                          </div>
-                          <div>
-                            {mounted ? t("datePublished") : "Release Date"} :{" "}
-                            {movieDetail.releaseDate}
-                          </div>
-                        </div>
-                        <div className="flex gap-4 md:hidden ">
-                          <button className="border text-white w-10 h-10 rounded-full md:hidden flex items-center justify-center">
-                            <i className="fa-solid fa-plus text-sm"></i>
-                          </button>
-                          <button className="border md:hidden text-white w-10 h-10 rounded-full flex items-center justify-center">
-                            <i className="fa-solid fa-thumbs-up text-sm"></i>
-                          </button>
-                          <button className="border md:hidden text-white w-10 h-10 rounded-full flex items-center justify-center">
-                            <i className="fa-solid fa-thumbs-down text-sm"></i>
-                          </button>
-                        </div>
-                      </div>
-                      <div className="mt-10">
-                        <div className="text-xl font-bold">
-                          {mounted ? t("episodes") : "Episodes"}
-                        </div>
-                        <div>
-                          <ul>
-                            {episodeList.map((episode) => (
-                              <li
-                                key={episode.id}
-                                className="flex items-center gap-4 my-4 cursor-pointer  hover:bg-white/10 p-2 rounded"
-                              >
-                                {movieDetail.posterUrl ? (
-                                  <img
-                                    loading="lazy"
-                                    src={movieDetail.posterUrl}
-                                    alt={episode.title}
-                                    className="w-32 h-20 object-cover rounded"
-                                  />
-                                ) : (
-                                  <div className="w-32 h-20 bg-black rounded"></div>
-                                )}
-
-                                <div>
-                                  <div className="font-bold">
-                                    {episode.title}
+                            <ul>
+                              {episodeList.map((episode) => (
+                                <li
+                                  key={episode.id}
+                                  className="flex items-center gap-4 my-4 cursor-pointer  hover:bg-white/10 p-2 rounded"
+                                >
+                                  {movieDetail.posterUrl ? (
+                                    <img
+                                      loading="lazy"
+                                      src={movieDetail.posterUrl}
+                                      alt={episode.title}
+                                      className="w-32 h-20 object-cover rounded"
+                                    />
+                                  ) : (
+                                    <div className="w-32 h-20 bg-black rounded"></div>
+                                  )}
+  
+                                  <div>
+                                    <div className="font-bold">
+                                      {episode.title}
+                                    </div>
+                                    <div className="text-sm">
+                                      {episode.description}
+                                    </div>
                                   </div>
-                                  <div className="text-sm">
-                                    {episode.description}
-                                  </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                     </div>
                 )}
               </Dialog.Panel>
             </Transition.Child>

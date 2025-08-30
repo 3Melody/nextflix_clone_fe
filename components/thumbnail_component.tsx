@@ -24,14 +24,17 @@ export default function Thumbnail({ image, title }: ThumbnailProps) {
           )}
 
           {/* Image */}
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            onLoad={() => setLoading(false)}
-            onError={() => setLoading(false)}
-          />
+         <div className='relative w-full h-50 sm:h-60 md:h-80 xl:h-80'>
+            <Image
+              src={image}
+              alt={title}
+              className="object-cover"
+              fill
+              loading="lazy"
+              onLoad={() => setLoading(false)}
+              onError={() => setLoading(false)}
+            />
+         </div>
         </>
       ) : (
         <div className="flex justify-center items-center h-full font-bold text-xl bg-black text-center text-white">
