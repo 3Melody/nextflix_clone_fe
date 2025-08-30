@@ -4,9 +4,13 @@ import React, { useState , useEffect } from 'react'
 import Thumbnail from '../../components/thumbnail_component';
 import { useParams } from 'next/navigation';
 import MovieDetailModal from '../../components/popup_movie_detail';
+import UiState from '../../components/stateMenage/UiState';
+import { useUi } from '../../components/stateMenage/UiProvider';
 
 
 export default function SearchPage() {
+
+  
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [movieTotal , setMovieTotal] = useState(0);
@@ -14,12 +18,15 @@ export default function SearchPage() {
   const [keyword , setKeyword] = useState('');
   const [movieId, setMovieId] = useState(Number(0));
   const [openModal, setOpenModal] = useState(false);
+  const { setLoadingOverlay, setError } = useUi();
 
   useEffect(() => {
     const handleStorageChange = () => {
       const lastSearch = localStorage.getItem('lastSearch') || '';
       setKeyword(lastSearch);
-      fetchMovies(lastSearch);
+      if (lastSearch) {
+        fetchMovies(lastSearch);
+      }
     };
 
     // Initial load
@@ -38,28 +45,29 @@ export default function SearchPage() {
 
   const fetchMovies = async (query : string) => {
     try {
-      if(!query){
-        setMovies([]);
-        setMovieTotal(0);
-        return null;
-      };
+      setLoadingOverlay(true);
       const response = await fetch(`${apiUrl}/movies/search/${query}`);
       const data = await response.json();
+     
+
+      if (!response.ok) {
+        setError(data.message || 'Failed to fetch movies');
+        return;
+      }
       setMovies(data);
       setMovieTotal(data.length);
+      setLoadingOverlay(false);
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
   };
   
-
-
-
   return (
     <div>
-      <div className="pt-20 px-13 ">
+      <div className="xl:pt-20 xl:px-13 pt-50 px-5 pb-5 ">
         <div className="text-xl font-bold">Search Result : {movieTotal}</div>
-        <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-6 gap-3 mt-5">
+        {!keyword && ( <div className='text-xl font-bold flex justify-center items-center h-[80vh]'>ไม่พบข้อมูล</div>)}
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 mt-5">
           {movies.map((movie: any) => (
             <div key={movie.id} onClick={() => showModalDetails(movie.id)}>
               {" "}

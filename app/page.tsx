@@ -11,7 +11,7 @@ import { Autoplay } from "swiper/modules";
 import top10 from "../public/images/Top10.png";
 import { useEffect, useState } from "react";
 import MovieDetailModal from "../components/popup_movie_detail";
-import UiState from "@/components/stateMenage/UiState";
+import { useUi } from '../components/stateMenage/UiProvider';
 
 
 export default function Home() {
@@ -21,11 +21,11 @@ export default function Home() {
 const [popular , setPopular] = useState([]);
 const [movieId, setMovieId] = useState(Number(0));
 const [openModal, setOpenModal] = useState(false);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState<string | null>(null);
+const { setLoading, setError } = useUi();
 
 
 useEffect(() => {
+  setLoading(true);
   fetch(`${apiUrl}/movies/popular`)
   .then((response) => response.json())
   .then((data) => setPopular(data))
@@ -41,10 +41,6 @@ const showModalDetails = (movieId: number) => {
   return (
     
     <div>
-      <UiState
-      loading={loading}
-      error={error || undefined}
-    ></UiState>
       <div>
         <div className="relative">
           <Image
@@ -52,8 +48,8 @@ const showModalDetails = (movieId: number) => {
             alt="logo"
             className="w-[100vw] h-[100vh] object-cover object-[70%_0] md:object-center"
           />
-          <div className="absolute md:top-1/2 md:left-[3%] md:-translate-y-1/2 md:translate-x-0 bottom-[3%] left-1/2 -translate-x-1/2 w-70 md:w-160">
-            <div className="flex flex-col gap-3 md:gap-6 items-center md:items-start">
+          <div className="absolute md:top-1/2 md:left-[3%] md:-translate-y-1/2 md:translate-x-0 bottom-[7%] left-1/2 -translate-x-1/2 w-70 md:w-160">
+            <div className="flex flex-col gap-5 md:gap-6 items-center md:items-start">
               <Image src={name_movie} alt="logo" width={500} /> 
               <div className="flex gap-3 items-center ">
                 <Image
@@ -106,12 +102,15 @@ const showModalDetails = (movieId: number) => {
             <div>
               <Swiper
                 spaceBetween={10}
-                slidesPerView={2}
-                slidesOffsetBefore={10}
+                slidesPerView={3.5}
+                slidesOffsetBefore={20}
                 breakpoints={{
-                  640: { slidesPerView: 4.5, spaceBetween: 10 , slidesOffsetBefore: 30}, // sm
-                  768: { slidesPerView: 6.5, spaceBetween: 15  , slidesOffsetBefore: 55}, // md
-                  1024: { slidesPerView: 6.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // lg
+                  480: { slidesPerView: 4.5, spaceBetween: 10 , slidesOffsetBefore: 30}, // xs
+                  640: { slidesPerView: 5.5, spaceBetween: 10 , slidesOffsetBefore: 30}, // sm
+                  768: { slidesPerView: 4, spaceBetween: 15  , slidesOffsetBefore: 55}, // md
+                  1024: { slidesPerView: 4.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // lg
+                  1280: { slidesPerView: 5.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // xl
+                  1536: { slidesPerView: 6.5, spaceBetween: 20 , slidesOffsetBefore: 55 }, // 2xl
                 }}
                 
               >
