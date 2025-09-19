@@ -71,3 +71,31 @@ li{
   }
 }
 
+.MuiChartsAxis-line { stroke: white !important; }
+.MuiChartsAxis-tickLabel { fill: white !important; }
+.MuiChartsLegend-root { color: white !important; }
+.MuiChartsLegend-label { fill: white !important; }
+
+/* ซ่อน scrollbar เหมือน Netflix */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE และ Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.MuiChartsNoData-text {
+  color: white !important;
+}
+
+/* กรณีอยากปรับ axes และ labels เป็นสีขาวด้วย */
+.MuiChartsAxis-line,
+.MuiChartsAxis-tickLabel,
+.MuiChartsLegend-root,
+.MuiChartsLegend-label {
+  color: white !important;
+  fill: white !important; /* บางกราฟต้องใช้ fill */
+}
+
+

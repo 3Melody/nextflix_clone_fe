@@ -5,7 +5,7 @@ import Image from 'next/image';
 import netflixLogo from '../../public/images/nexflix_logo.png';
 
 const UiState: React.FC = () => {
-  const { loading, error, loadingOverlay } = useUi();
+  const { loading, error, loadingOverlay , success , authCheck } = useUi();
 
   if (loading) {
     return (
@@ -23,6 +23,30 @@ const UiState: React.FC = () => {
     );
   }
 
+
+  // if (success) {
+  //   return (
+  //    <div className="fixed inset-0 flex flex-col items-center justify-center p-4 z-50">
+  //       <div className="w-20">Success</div>
+  //     </div>
+  //   );
+  // }
+
+  // if(commonError) {
+  //   return (
+  //     <div className="flex flex-col items-center fixed inset-0 w-full h-full z-20 bg-black justify-center p-4">
+  //       <div className='flex flex-col items-center mb-4 gap-3'>
+  //         <Image src={netflixLogo} alt="logo" width={300} height={300}/>
+  //         <div className='text-2xl font-bold mt-8'>Something went wrong...</div>
+  //         <div className='font-bold flex md:flex-row flex-col gap-3'>
+  //           <button className='w-50 py-3 border rounded-md' onClick={() => window.location.reload()}>Try Again</button>
+  //           <button className='w-50 py-3 bg-white rounded-md text-black'>More Details</button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   if (error) {
     return (
       <div className="flex flex-col items-center fixed inset-0 w-full h-full z-20 bg-black justify-center p-4">
@@ -32,6 +56,21 @@ const UiState: React.FC = () => {
           <div className='font-bold flex md:flex-row flex-col gap-3'>
             <button className='w-50 py-3 border rounded-md' onClick={() => window.location.reload()}>Try Again</button>
             <button className='w-50 py-3 bg-white rounded-md text-black'>More Details</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+   if (authCheck) {
+    return (
+      <div className="flex flex-col items-center fixed inset-0 w-full h-full z-20 bg-black justify-center p-4">
+        <div className='flex flex-col items-center mb-4 gap-3'>
+          <Image src={netflixLogo} alt="logo" width={300} height={300}/>
+          <div className='text-2xl font-bold mt-8'>Permission required</div>
+          <div className='font-bold flex md:flex-row flex-col gap-3'>
+            <button className='w-50 py-3 border rounded-md' onClick={() => window.location.reload()}>Try Again</button>
+            <button className='w-50 py-3 bg-white rounded-md text-black' onClick={() => window.location.href = "/" }>Home</button>
           </div>
         </div>
       </div>

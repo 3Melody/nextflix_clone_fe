@@ -4,6 +4,16 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['image.tmdb.org'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "example.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.example.com",
+      },
+    ],
   },
   experimental: {
     optimizeCss: false, // ลดขนาด CSS
